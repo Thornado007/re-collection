@@ -1,0 +1,12 @@
+{
+  "name": "re-collection",
+  "version": "1.0.0",
+  "description": "Photo archive site",
+  "scripts": {
+    "build": "hugo"
+  },
+  "devDependencies": {
+    "postcss": "^8.4.0",
+    "postcss-cli": "^10.0.0"
+  }
+}
