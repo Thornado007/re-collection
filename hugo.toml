@@ -1,12 +1,12 @@
 baseURL = "https://re-collection.netlify.app/"
 languageCode = "en-us"
 title = "re-collection - Photo Archive"
-theme = "sam"
+theme = "ananke"
 
 [params]
   description = "A personal archive of film scans and photography"
   author = "Thornado007"
-
+  
 # Enable Netlify CMS
 [mediaTypes]
   [mediaTypes."text/netlify"]
