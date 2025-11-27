@@ -4,41 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Manager</title>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </head>
 <body>
-  <script>
-    const CMS = window.CMS;
-    CMS.registerBackend('git-gateway', window.CMS.getBackend('git-gateway'));
-    
-    CMS.init({
-      config: {
-        backend: {
-          name: 'git-gateway',
-          branch: 'main',
-        },
-        load_config_file: false,
-        media_folder: 'static/images',
-        public_folder: '/images',
-        collections: [
-          {
-            name: 'archive',
-            label: 'Archive Items',
-            folder: 'content/archive',
-            create: true,
-            slug: '{{slug}}',
-            fields: [
-              { label: 'Title', name: 'title', widget: 'string' },
-              { label: 'Featured Image', name: 'image', widget: 'image' },
-              { label: 'Description', name: 'description', widget: 'text' },
-              { label: 'Categories', name: 'categories', widget: 'list' },
-              { label: 'Date', name: 'date', widget: 'datetime' },
-              { label: 'Body', name: 'body', widget: 'markdown' }
-            ]
-          }
-        ]
-      }
-    });
-  </script>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
