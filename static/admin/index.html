@@ -7,6 +7,37 @@
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
+  <!-- Include the CMS library -->
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  
+  <!-- Initialize the CMS with explicit config -->
+  <script>
+    CMS.init({
+      config: {
+        backend: {
+          name: 'git-gateway',
+          branch: 'main'
+        },
+        load_config_file: false,
+        media_folder: "static/images",
+        public_folder: "/images",
+        collections: [{
+          name: "archive",
+          label: "Archive Items",
+          folder: "content/archive",
+          create: true,
+          slug: "{{slug}}",
+          fields: [
+            {label: "Title", name: "title", widget: "string"},
+            {label: "Featured Image", name: "image", widget: "image"},
+            {label: "Description", name: "description", widget: "text"},
+            {label: "Categories", name: "categories", widget: "list"},
+            {label: "Date", name: "date", widget: "datetime"},
+            {label: "Body", name: "body", widget: "markdown"}
+          ]
+        }]
+      }
+    });
+  </script>
 </body>
 </html>
