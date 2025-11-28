@@ -1,0 +1,16 @@
+{
+  "name": "re-collection",
+  "version": "1.0.0",
+  "description": "Photo archive site",
+  "scripts": {
+    "build": "hugo",
+    "tina-dev": "tinacms dev -c \"hugo server -D\"",
+    "tina-build": "tinacms build && hugo"
+  },
+  "dependencies": {
+    "tinacms": "^1.6.5"
+  },
+  "devDependencies": {
+    "@tinacms/cli": "^1.6.5"
+  }
+}
