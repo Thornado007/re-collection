@@ -1,0 +1,108 @@
+{{ define "main" }}
+<div class="max-w-4xl mx-auto px-4 py-8">
+  
+  <!-- Image with inline style for max height -->
+  <div class="text-center mb-10">
+    <img 
+      src="{{ .Params.image }}" 
+      alt="{{ .Title }}" 
+      style="max-width: 100%; max-height: 70vh; width: auto; height: auto;"
+      class="mx-auto"
+      loading="lazy"
+    />
+    <p class="text-sm text-gray-500 mt-2">Click image to view full size</p>
+  </div>
+  
+  <!-- Metadata List -->
+  <div class="space-y-5 text-lg">
+    
+    <!-- Title -->
+    <div class="flex">
+      <span class="text-gray-600 font-bold w-48 flex-shrink-0">Title:</span>
+      <span class="ml-2">{{ .Title }}</span>
+    </div>
+    
+    <!-- Author -->
+    {{ with .Params.author }}
+      <div class="flex">
+        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Author:</span>
+        <span class="ml-2">
+          {{ if eq (printf "%T" .) "[]string" }}
+            {{ range . }}
+              <a href="/author/{{ . | urlize }}/" class="text-blue-600 hover:text-blue-800 hover:underline">{{ . }}</a>
+            {{ end }}
+          {{ else }}
+            <a href="/author/{{ . | urlize }}/" class="text-blue-600 hover:text-blue-800 hover:underline">{{ . }}</a>
+          {{ end }}
+        </span>
+      </div>
+    {{ end }}
+    
+    <!-- Scan Equipment -->
+    {{ with .Params.scan_equipment }}
+      <div class="flex">
+        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Scan Equipment:</span>
+        <span class="ml-2">{{ . }}</span>
+      </div>
+    {{ end }}
+
+    <!-- Scanning Method -->
+    {{ with .Params.scanning_method }}
+      <div class="flex">
+        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Scanning Method:</span>
+        <span class="ml-2">{{ . }}</span>
+      </div>
+    {{ end }}
+    
+    <!-- Scanner Settings -->
+    {{ with .Params.scanner_settings }}
+      <div class="flex">
+        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Scanner Settings:</span>
+        <span class="ml-2">{{ . }}</span>
+      </div>
+    {{ end }}
+    
+    <!-- Original Date -->
+    {{ with .Params.original_date }}
+      <div class="flex">
+        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Original Date:</span>
+        <span class="ml-2">{{ . }}</span>
+      </div>
+    {{ end }}
+    
+    <!-- Medium -->
+    {{ with .Params.medium }}
+      <div class="flex">
+        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Medium:</span>
+        <span class="ml-2">{{ . }}</span>
+      </div>
+    {{ end }}
+    
+    <!-- Location -->
+    {{ with .Params.location }}
+      <div class="flex">
+        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Location:</span>
+        <span class="ml-2">{{ . }}</span>
+      </div>
+    {{ end }}
+    
+    <!-- Description -->
+    {{ with .Params.description }}
+      <div class="flex">
+        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Description:</span>
+        <span class="ml-2">{{ . }}</span>
+      </div>
+    {{ end }}
+    
+    <!-- Copyright -->
+    {{ with .Params.copyright }}
+      <div class="flex">
+        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Copyright:</span>
+        <span class="ml-2">{{ . }}</span>
+      </div>
+    {{ end }}
+    
+  </div>
+  
+</div>
+{{ end }}

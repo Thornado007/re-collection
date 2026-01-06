@@ -1,0 +1,79 @@
+{{ define "main" }}
+<div style="max-width: 1400px; margin: 0 auto; padding: 1rem;">
+  
+  <h1 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">Images by {{ .Title }}</h1>
+  
+  <!-- 3-column masonry like collections -->
+  <div class="author-masonry-three">
+    {{ range .Pages }}
+      <a href="{{ .RelPermalink }}" class="author-item-three">
+        <img 
+          src="{{ .Params.image }}" 
+          alt="" 
+          loading="lazy"
+        />
+      </a>
+    {{ end }}
+  </div>
+  
+</div>
+
+<style>
+  /* 3-column masonry for authors */
+  .author-masonry-three {
+    column-count: 1;
+    column-gap: 8px;
+    width: 100%;
+  }
+  
+  .author-item-three {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 8px;
+    break-inside: avoid;
+  }
+  
+  .author-item-three img {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .author-item-three:hover img {
+    transform: scale(1.02);
+  }
+  
+  /* Responsive - 3 columns on desktop */
+  @media (min-width: 640px) {
+    .author-masonry-three {
+      column-count: 2;
+      column-gap: 10px;
+    }
+    .author-item-three {
+      margin-bottom: 10px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .author-masonry-three {
+      column-count: 3;
+      column-gap: 12px;
+    }
+    .author-item-three {
+      margin-bottom: 12px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .author-masonry-three {
+      column-count: 3;
+      column-gap: 15px;
+    }
+    .author-item-three {
+      margin-bottom: 15px;
+    }
+  }
+</style>
+{{ end }}

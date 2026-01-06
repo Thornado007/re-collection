@@ -1,0 +1,21 @@
+
+
+[[main]]
+  name = "Archive"
+  pageRef = "/archive"
+  weight = 20
+
+[[main]]
+  name = "Blog"
+  pageRef = "/blog"
+  weight = 30
+
+[[main]]
+  name = "About"
+  pageRef = "/about"
+  weight = 40
+
+[[footer]]
+#  name = "Authors"
+# pageRef = "/authors"
+# weight = 10
