@@ -1,9 +1,9 @@
 name = "re-collection"
 compatibility_date = "2025-07-31"
+main = "./public/_worker.js"
 
 [build]
 command = "chmod a+x build.sh && ./build.sh"
 
 [site]
 bucket = "./public"
-not_found_handling = "404-page"
