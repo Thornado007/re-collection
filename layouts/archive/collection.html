@@ -6,15 +6,20 @@
   <!-- Grid with square containers -->
   <div class="collection-grid">
     {{ range .Pages }}
-      <a href="{{ .RelPermalink }}" class="collection-item" data-no-lightbox>
+      <div class="collection-item">
+        <!-- Invisible overlay link -->
+        <a href="{{ .RelPermalink }}" class="image-link" aria-label="View {{ .Title }}"></a>
+        
+        <!-- The image -->
         <div class="image-wrapper">
           <img 
             src="{{ .Params.image }}" 
-            alt="" 
+            alt="{{ .Title }}" 
             loading="lazy"
+            data-no-lightbox
           />
         </div>
-      </a>
+      </div>
     {{ end }}
   </div>
   
@@ -41,15 +46,26 @@
     gap: 12px;
   }
   
-  /* Square container - uses theme background */
+  /* Square container */
   .collection-item {
-    display: block;
-    text-decoration: none;
+    position: relative;
     overflow: hidden;
     border-radius: 4px;
     aspect-ratio: 1 / 1;
-    background-color: var(--card-bg); /* Matches Blowfish card background */
-    border: 1px solid var(--border-color); /* Optional subtle border */
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+  }
+  
+  /* INVISIBLE OVERLAY LINK - covers entire square */
+  .image-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10; /* Sits above image */
+    cursor: pointer;
+    text-decoration: none;
   }
   
   .image-wrapper {
@@ -59,6 +75,7 @@
     align-items: center;
     justify-content: center;
     padding: 12px;
+    pointer-events: none; /* Prevents clicks on image */
   }
   
   .image-wrapper img {
@@ -67,13 +84,15 @@
     max-width: 100%;
     max-height: 100%;
     display: block;
-    transition: transform 0.3s ease;
     border-radius: 2px;
+    pointer-events: none; /* Prevents clicks on image */
   }
   
-  /* Hover effect */
-  .collection-item:hover img {
-    transform: scale(1.05);
+  /* Optional hover effect on container */
+  .collection-item:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
   
   /* Responsive columns */
@@ -93,27 +112,34 @@
 </style>
 
 <script>
-// Disable lightbox and ensure theme compatibility
+// Nuclear option: Completely disable lightbox for this page
 document.addEventListener('DOMContentLoaded', function() {
-  const items = document.querySelectorAll('.collection-item');
+  // Remove all lightbox attributes and event listeners
+  const images = document.querySelectorAll('.collection-item img');
   
-  items.forEach(item => {
-    // Remove lightbox attributes
-    const img = item.querySelector('img');
-    if (img) {
-      img.removeAttribute('data-lightbox');
-      img.removeAttribute('data-action');
-      img.setAttribute('data-no-lightbox', 'true');
-    }
+  images.forEach(img => {
+    // Remove any lightbox attributes
+    img.removeAttribute('data-lightbox');
+    img.removeAttribute('data-action');
+    img.removeAttribute('data-zoomable');
     
-    // Ensure click goes to link, not lightbox
-    item.addEventListener('click', function(e) {
-      if (e.target === img) {
-        e.preventDefault();
-        window.location.href = item.href;
-      }
-    });
+    // Add attribute to prevent lightbox initialization
+    img.setAttribute('data-no-lightbox', 'true');
+    
+    // Clone and replace to remove any attached event listeners
+    const newImg = img.cloneNode(true);
+    img.parentNode.replaceChild(newImg, img);
   });
+  
+  // Also disable any parent lightbox initialization
+  if (window.lightbox) {
+    window.lightbox.destroy();
+  }
+  
+  // Prevent lightbox from being initialized on these images
+  document.addEventListener('lightbox:init', function(e) {
+    e.preventDefault();
+  }, true);
 });
 </script>
 {{ end }}
