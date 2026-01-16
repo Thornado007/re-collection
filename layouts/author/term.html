@@ -1,17 +1,21 @@
 {{ define "main" }}
-<div style="max-width: 1400px; margin: 0 auto; padding: 1rem;">
+<div class="collection-container">
   
-  <h1 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">Images by {{ .Title }}</h1>
+  <h1 class="collection-title">Images by {{ .Title }}</h1>
   
-  <!-- 3-column masonry like collections -->
-  <div class="author-masonry-three">
+  <!-- Grid with NO animations -->
+  <div class="collection-grid" data-disable-animations>
     {{ range .Pages }}
-      <a href="{{ .RelPermalink }}" class="author-item-three">
-        <img 
-          src="{{ .Params.image }}" 
-          alt="" 
-          loading="lazy"
-        />
+      <a href="{{ .RelPermalink }}" class="collection-item" data-no-animations>
+        <div class="image-wrapper">
+          <img 
+            src="{{ .Params.image }}" 
+            alt="" 
+            loading="lazy"
+            data-no-zoom
+            data-no-animation
+          />
+        </div>
       </a>
     {{ end }}
   </div>
@@ -19,61 +23,162 @@
 </div>
 
 <style>
-  /* 3-column masonry for authors */
-  .author-masonry-three {
-    column-count: 1;
-    column-gap: 8px;
-    width: 100%;
+  .collection-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem;
   }
   
-  .author-item-three {
-    display: inline-block;
-    width: 100%;
-    margin-bottom: 8px;
-    break-inside: avoid;
+  .collection-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: var(--color-text);
   }
   
-  .author-item-three img {
-    width: 100%;
-    height: auto;
+  /* Grid layout */
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 12px;
+  }
+  
+  /* Square container - NO transitions */
+  .collection-item {
     display: block;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+    text-decoration: none;
+    overflow: hidden;
+    border-radius: 4px;
+    aspect-ratio: 1 / 1;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    
+    /* DISABLE ALL TRANSITIONS */
+    transition: none !important;
+    animation: none !important;
   }
   
-  .author-item-three:hover img {
-    transform: scale(1.02);
+  .image-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
   }
   
-  /* Responsive - 3 columns on desktop */
+  .image-wrapper img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    border-radius: 2px;
+    
+    /* DISABLE ALL IMAGE TRANSITIONS & TRANSFORMS */
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  
+  /* NO hover effects */
+  .collection-item:hover {
+    transform: none !important;
+  }
+  
+  .collection-item:hover img {
+    transform: none !important;
+  }
+  
+  /* Responsive columns */
   @media (min-width: 640px) {
-    .author-masonry-three {
-      column-count: 2;
-      column-gap: 10px;
-    }
-    .author-item-three {
-      margin-bottom: 10px;
-    }
-  }
-  
-  @media (min-width: 768px) {
-    .author-masonry-three {
-      column-count: 3;
-      column-gap: 12px;
-    }
-    .author-item-three {
-      margin-bottom: 12px;
+    .collection-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
     }
   }
   
   @media (min-width: 1024px) {
-    .author-masonry-three {
-      column-count: 3;
-      column-gap: 15px;
-    }
-    .author-item-three {
-      margin-bottom: 15px;
+    .collection-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
   }
+  
+  /* Nuclear option: Disable all Blowfish image behaviors */
+  [data-disable-animations] *,
+  [data-no-animations] *,
+  [data-no-zoom] {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
 </style>
+
+<script>
+// NUCLEAR OPTION: Disable ALL image interactions
+document.addEventListener('DOMContentLoaded', function() {
+  const collection = document.querySelector('.collection-grid');
+  const items = document.querySelectorAll('.collection-item');
+  
+  // 1. Disable CSS transitions globally for this section
+  collection.style.cssText += 'transition: none !important; animation: none !important;';
+  
+  // 2. Add inline styles to override everything
+  items.forEach(item => {
+    item.style.cssText = `
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+    `;
+    
+    const img = item.querySelector('img');
+    if (img) {
+      img.style.cssText = `
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+        pointer-events: none !important;
+      `;
+      
+      // Remove any event listeners
+      img.onclick = null;
+      img.onmousedown = null;
+      img.onmouseup = null;
+      img.ontouchstart = null;
+      img.ontouchend = null;
+      
+      // Replace image to remove any bound events
+      const newImg = img.cloneNode(true);
+      img.parentNode.replaceChild(newImg, img);
+    }
+  });
+  
+  // 3. Prevent any click animations
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.collection-item') || e.target.closest('.collection-grid')) {
+      e.stopPropagation();
+      e.preventDefault();
+      // Allow default link behavior but prevent animations
+      const link = e.target.closest('a');
+      if (link && link.href) {
+        window.location.href = link.href;
+      }
+    }
+  }, true); // Use capture phase to intercept early
+  
+  // 4. Disable touch gestures
+  document.addEventListener('touchstart', function(e) {
+    if (e.target.closest('.collection-item')) {
+      e.stopPropagation();
+    }
+  }, { passive: false });
+  
+  document.addEventListener('touchend', function(e) {
+    if (e.target.closest('.collection-item')) {
+      e.stopPropagation();
+    }
+  }, { passive: false });
+});
+</script>
 {{ end }}

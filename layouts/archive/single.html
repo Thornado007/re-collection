@@ -1,7 +1,7 @@
 {{ define "main" }}
-<div class="max-w-4xl mx-auto px-4 py-8">
+<div class="max-w-6xl mx-auto px-4 py-8">
   
-  <!-- Image with inline style for max height -->
+  <!-- Image Container -->
   <div class="text-center mb-10">
     <img 
       src="{{ .Params.image }}" 
@@ -13,96 +13,104 @@
     <p class="text-sm text-gray-500 mt-2">Click image to view full size</p>
   </div>
   
-  <!-- Metadata List -->
-  <div class="space-y-5 text-lg">
+  <!-- Metadata Section -->
+  <div style="max-width: 800px; margin: 0 auto; text-align: left;">
     
-    <!-- Title -->
-    <div class="flex">
-      <span class="text-gray-600 font-bold w-48 flex-shrink-0">Title:</span>
-      <span class="ml-2">{{ .Title }}</span>
+    <!-- Artist (LARGER, Bold, CLICKABLE) -->
+    {{ with .Params.author }}
+      <div style="font-weight: bold; font-size: 1.5rem; color: #000; margin-bottom: 0.25rem;">
+        {{ if eq (printf "%T" .) "[]string" }}
+          {{ range $index, $author := . }}
+            {{ if $index }}, {{ end }}
+            <a href="/author/{{ $author | urlize }}/" 
+               style="color: #000; text-decoration: none; border-bottom: 1px solid #000;">
+              {{ $author }}
+            </a>
+          {{ end }}
+        {{ else }}
+          <a href="/author/{{ . | urlize }}/" 
+             style="color: #000; text-decoration: none; border-bottom: 1px solid #000;">
+            {{ . }}
+          </a>
+        {{ end }}
+      </div>
+    {{ end }}
+    
+    <!-- Title (SMALLER than artist, Italic) -->
+    <div style="font-size: 1.25rem; font-style: italic; color: #000; margin-bottom: 1.5rem;">
+      {{ .Title }}
     </div>
     
-    <!-- Author -->
-    {{ with .Params.author }}
-      <div class="flex">
-        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Author:</span>
-        <span class="ml-2">
-          {{ if eq (printf "%T" .) "[]string" }}
-            {{ range . }}
-              <a href="/author/{{ . | urlize }}/" class="text-blue-600 hover:text-blue-800 hover:underline">{{ . }}</a>
-            {{ end }}
-          {{ else }}
-            <a href="/author/{{ . | urlize }}/" class="text-blue-600 hover:text-blue-800 hover:underline">{{ . }}</a>
-          {{ end }}
-        </span>
-      </div>
-    {{ end }}
-    
-    <!-- Scan Equipment -->
-    {{ with .Params.scan_equipment }}
-      <div class="flex">
-        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Scan Equipment:</span>
-        <span class="ml-2">{{ . }}</span>
-      </div>
-    {{ end }}
+    <!-- Technical Metadata List -->
+    <div style="color: #000;">
+      
+      <!-- Original Date -->
+      {{ with .Params.original_date }}
+        <div style="margin-bottom: 0.5rem;">
+          <span style="font-weight: 600;">Date: </span>{{ . }}
+        </div>
+      {{ end }}
+      
+      <!-- Medium -->
+      {{ with .Params.medium }}
+        <div style="margin-bottom: 0.5rem;">
+          <span style="font-weight: 600;">Medium: </span>{{ . }}
+        </div>
+      {{ end }}
+      
+      <!-- Location -->
+      {{ with .Params.location }}
+        <div style="margin-bottom: 0.5rem;">
+          <span style="font-weight: 600;">Location: </span>{{ . }}
+        </div>
+      {{ end }}
+      
+      <!-- Scan Equipment -->
+      {{ with .Params.scan_equipment }}
+        <div style="margin-bottom: 0.5rem;">
+          <span style="font-weight: 600;">Scan Equipment: </span>{{ . }}
+        </div>
+      {{ end }}
 
-    <!-- Scanning Method -->
-    {{ with .Params.scanning_method }}
-      <div class="flex">
-        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Scanning Method:</span>
-        <span class="ml-2">{{ . }}</span>
-      </div>
-    {{ end }}
-    
-    <!-- Scanner Settings -->
-    {{ with .Params.scanner_settings }}
-      <div class="flex">
-        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Scanner Settings:</span>
-        <span class="ml-2">{{ . }}</span>
-      </div>
-    {{ end }}
-    
-    <!-- Original Date -->
-    {{ with .Params.original_date }}
-      <div class="flex">
-        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Original Date:</span>
-        <span class="ml-2">{{ . }}</span>
-      </div>
-    {{ end }}
-    
-    <!-- Medium -->
-    {{ with .Params.medium }}
-      <div class="flex">
-        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Medium:</span>
-        <span class="ml-2">{{ . }}</span>
-      </div>
-    {{ end }}
-    
-    <!-- Location -->
-    {{ with .Params.location }}
-      <div class="flex">
-        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Location:</span>
-        <span class="ml-2">{{ . }}</span>
-      </div>
-    {{ end }}
-    
-    <!-- Description -->
-    {{ with .Params.description }}
-      <div class="flex">
-        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Description:</span>
-        <span class="ml-2">{{ . }}</span>
-      </div>
-    {{ end }}
-    
-    <!-- Copyright -->
-    {{ with .Params.copyright }}
-      <div class="flex">
-        <span class="text-gray-600 font-bold w-48 flex-shrink-0">Copyright:</span>
-        <span class="ml-2">{{ . }}</span>
-      </div>
-    {{ end }}
+      <!-- Scanning Method -->
+      {{ with .Params.scanning_method }}
+        <div style="margin-bottom: 0.5rem;">
+          <span style="font-weight: 600;">Scanning Method: </span>{{ . }}
+        </div>
+      {{ end }}
+      
+      <!-- Scanner Settings -->
+      {{ with .Params.scanner_settings }}
+        <div style="margin-bottom: 0.5rem;">
+          <span style="font-weight: 600;">Scanner Settings: </span>{{ . }}
+        </div>
+      {{ end }}
+      
+      <!-- Description -->
+      {{ with .Params.description }}
+        <div style="padding-top: 1rem; margin-top: 1rem; border-top: 1px solid #ddd; margin-bottom: 1rem;">
+          <div style="font-weight: 600; margin-bottom: 0.5rem;">Description:</div>
+          <div>{{ . }}</div>
+        </div>
+      {{ end }}
+      
+      <!-- Copyright -->
+      {{ with .Params.copyright }}
+        <div style="padding-top: 1rem; margin-top: 1rem; border-top: 1px solid #ddd;">
+          <span style="font-weight: 600;">Copyright: </span>{{ . }}
+        </div>
+      {{ end }}
+      
+    </div>
     
   </div>
   
 </div>
+
+<style>
+/* Add hover effect for artist link */
+a[href^="/author/"]:hover {
+  opacity: 0.7;
+}
+</style>
 {{ end }}
