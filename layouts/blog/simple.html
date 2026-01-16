@@ -1,0 +1,54 @@
+{{ define "main" }}
+<article class="max-w-4xl mx-auto px-4 py-8">
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold mb-2">{{ .Title }}</h1>
+    <div class="text-gray-600">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">
+        {{ .Date.Format "January 2, 2006" }}
+      </time>
+    </div>
+  </header>
+
+  <div class="post-content prose prose-lg max-w-none">
+    {{ .Content }}
+  </div>
+
+  <footer class="mt-8 pt-6 border-t">
+    <!-- Footer content -->
+  </footer>
+</article>
+
+<style>
+/* IMPORTANT: Keep text column normal */
+.prose {
+  max-width: none !important;
+}
+
+/* Only fix tall images */
+.post-content figure img {
+  max-height: 70vh; /* Maximum 70% of screen height */
+  width: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Keep normal images as they were */
+.post-content img:not(figure img) {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Optional: Add subtle styling to figures */
+.post-content figure {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.post-content figcaption {
+  font-style: italic;
+  margin-top: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+</style>
+{{ end }}
